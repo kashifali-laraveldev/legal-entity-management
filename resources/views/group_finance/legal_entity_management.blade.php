@@ -364,11 +364,13 @@
             });
 
             const overlay = document.getElementById('grmEntityLoadingOverlay');
-            document.querySelectorAll('form').forEach(function (f) {
-                f.addEventListener('submit', function () {
+            if (entityForm) {
+                // Show local loading overlay only for create/update drawer submit.
+                // Delete forms use GrmUI + SweetAlert flow and should not be blocked here.
+                entityForm.addEventListener('submit', function () {
                     if (overlay) overlay.style.display = 'block';
                 });
-            });
+            }
 
             if (window.jQuery && $('#entityTable').length) {
                 const $mount = $('#legalDatatableSearchMount');

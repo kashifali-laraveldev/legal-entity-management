@@ -159,8 +159,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('form[data-delete-form="true"]').forEach(function (form) {
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
+            if (form.dataset.isSubmitting === 'true') return;
             const ok = await window.GrmUI.confirmDelete(form.dataset.deleteMessage || 'Delete this record?');
             if (!ok) return;
+            form.dataset.isSubmitting = 'true';
+            const submitButton = form.querySelector('button[type="submit"],input[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
             window.GrmUI.showLoader('Deleting...');
             form.submit();
         });
